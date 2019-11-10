@@ -53,13 +53,18 @@ export function createUser(userObj){
 }
 
 
+
 export default function reducer(state = initialState, action){
+    // console.log('this is initialState: ', initialState)
+    // console.log('this is state: ', state)
     // console.log('this is action: ', action)
     // console.log('this is action.type: ', action.type)
     // console.log('this is action.payload: ', action.payload)
     const {type, payload} = action
     switch(type) {
-        case CREATE_USER: 
+        case CREATE_USER + '_FULFILLED': 
+        console.log('this is CREATE_USER action.type: ', action.type)
+        console.log('this is CREATE_USER action.payload: ', action.payload)
             return {
                 ...state, 
                 user: {
@@ -75,6 +80,8 @@ export default function reducer(state = initialState, action){
                 }
             }
         case LOGIN_USER: 
+        console.log('this is LOGIN_USER action.type: ', action.type)
+        console.log('this is LOGIN_USER action.payload: ', action.payload)
             return {
                 ...state, 
                 //add everything to state that could possibly be needed by this req.session.user. 

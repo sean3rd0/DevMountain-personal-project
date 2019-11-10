@@ -25,8 +25,9 @@ class CreateAccount extends React.Component{
     /* When they click the "Create" button, it fires this function, 
     which sends the values on state in the body of an axios.post request to create a new account. */
     handleCreateButtonClick(username, password, confirmPassword){
-        axios.post('/api/createaccount', {username: `${username}`, password: `${password}`, confirmPassword: `${confirmPassword}`})
+        axios.post('/api/createaccount', {username, password, confirmPassword})
         .then(response => {
+            console.log('this is the response.data from axios.post request to /api/createaccount in the CreateAccount component: ', response.data)
             this.setState({
                 usernameInput: "", 
                 passwordInput: "", 

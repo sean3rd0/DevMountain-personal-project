@@ -43,5 +43,27 @@ module.exports = {
                 res.status(401).send(`The passwords didn't match; please type them in again.`)
             }
         }
+    }, 
+
+    login: async (req, res) => {
+        const db = req.app.get('db')
+        const {username, password} = req.body
+        
+        let usernameExists = await db.check_username(username); 
+        usernameExists = usernameExists[0]
+
+        if (!usernameExists){
+            res.status(401).send('There is no account with this username. Are you sure you typed it in correctly? If you did, and you are still receiving this error message, please create an account :)')
+        } 
+        
+        const authenticated = bcrypt.compareSync(password, usernameExists.password)
+
+        if(authenticated){
+            delete usernameExists.password
+            req.session.user = usernameExists;//creating a user property on our session equal to foundUser^
+            res.status(202).send(req.session.user);
+        } else {
+            res.status(401).send('Password is incorrect')
+        }
     }
 }

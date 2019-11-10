@@ -1,1 +1,1 @@
-SELECT username FROM budr_users WHERE username = $1; 
+SELECT username, password FROM budr_users WHERE username = $1; 
