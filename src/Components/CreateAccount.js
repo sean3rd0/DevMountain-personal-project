@@ -2,7 +2,7 @@ import React from "react"
 import axios from "axios"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux"
-import userReducer from "../redux/userReducer"
+import {createUser} from "../redux/reducer"
 
 class CreateAccount extends React.Component{
     constructor(props){
@@ -14,22 +14,26 @@ class CreateAccount extends React.Component{
         }
     }
 
+    /* When they type in any of the input box, 
+    the property on the local state^ is changed accordingly by this function. */
     handleInputChange(event){
         this.setState({
             [event.target.name]: event.target.value
         })
     }
 
+    /* When they click the "Create" button, it fires this function, 
+    which sends the values on state in the body of an axios.post request to create a new account. */
     handleCreateButtonClick(username, password, confirmPassword){
-        axios.post('/api/createaccount', {username, password, confirmPassword})
+        axios.post('/api/createaccount', {username: `${username}`, password: `${password}`, confirmPassword: `${confirmPassword}`})
         .then(response => {
             this.setState({
                 usernameInput: "", 
                 passwordInput: "", 
                 confirmPasswordInput: ""
             })
-            this.props.updateUser(response.data)
-            // this.props.history.push('/')
+            this.props.createUser(response.data)
+            this.props.history.push('/pages')
         })
     }
 
@@ -42,20 +46,22 @@ class CreateAccount extends React.Component{
                     name="usernameInput"
                     onChange={event => this.handleInputChange(event)}
                     placeholder="JaneDoe1492"
-                />
+                    />
                 <input 
                     name="passwordInput"
                     onChange={event => this.handleInputChange(event)}
                     placeholder="3x@mplPassw0rd"
+                    type="password"
                 />
                 <input 
                     name="confirmPasswordInput"
                     onChange={event => this.handleInputChange(event)}
                     placeholder="3x@mplPassw0rd"
+                    type="password"
                 />
                 </div>
                 <button
-                    onClick={this.handleCreateButtonClick(usernameInput, passwordInput, confirmPasswordInput)}
+                    onClick={() => this.handleCreateButtonClick(usernameInput, passwordInput, confirmPasswordInput)}
                 >Create</button>
             </div>
         )
@@ -74,7 +80,7 @@ const mapStateToProps = (reduxState) => {
 }
 
 const mapDispatchToProps = {
-
+    createUser
 }
 
-export default connect(mapStateToProps, {/*functions dispatched to props from userReducer*/})(CreateAccount)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount)

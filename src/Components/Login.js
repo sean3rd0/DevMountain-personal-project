@@ -2,7 +2,7 @@ import React from "react"
 import axios from "axios"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux"
-import userReducer from "../redux/userReducer"
+import {loginUser} from "../redux/reducer"
 
 class Login extends React.Component {
     constructor(props){
@@ -40,10 +40,10 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (reduxState) => {
-    const {users, following, currentPage, postsOnCurrentPage} = reduxState;
+    const {user, following, currentPage, postsOnCurrentPage} = reduxState;
 
     return {
-        users, 
+        user, 
         following, 
         currentPage, 
         postsOnCurrentPage
@@ -51,7 +51,7 @@ const mapStateToProps = (reduxState) => {
 }
 
 const mapDispatchToProps = {
-
+    loginUser
 }
 
-export default connect(mapStateToProps, {/*functions dispatched to props from userReducer*/})(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

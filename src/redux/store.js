@@ -1,9 +1,9 @@
 import {createStore, applyMiddleware, combineReducers} from "redux"
 import promiseMiddleware from "redux-promise-middleware"
-import usersReducer from "./userReducer"
+import reducer from "./reducer"
 
 const rootReducer = combineReducers({
-    usersReducer
+    reducer
 })
 
 export default createStore(rootReducer, applyMiddleware(promiseMiddleware))
