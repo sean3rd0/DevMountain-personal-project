@@ -1,6 +1,31 @@
 const bcrypt = require('bcryptjs')
 
 module.exports = {
+    login: async (req, res) => {
+        const db = req.app.get('db')
+        const {username, password} = req.body
+        
+        let getUserInfo = await db.get_user_info(username); 
+        getUserInfo = getUserInfo[0]
+        
+        if (!getUserInfo){
+            res.status(401).send('There is no account with this username. Are you sure you typed it in correctly? If you did, and you are still receiving this error message, please create an account :)')
+        } 
+
+        let getLandingPage = await db.get_landing_page(username)
+        getLandingPage = getLandingPage[0]
+                
+        const authenticated = bcrypt.compareSync(password, getUserInfo.password)
+    
+        if(authenticated){
+            delete getUserInfo.password
+            req.session.user = {...getUserInfo, ...getLandingPage};//creating a user property on our session equal to getUserInfo^
+            res.status(202).send(req.session.user);
+        } else {
+            res.status(401).send('Password is incorrect')
+        }
+    }, 
+
     createAccount: async (req, res) => {
         const db = req.app.get('db')
 
@@ -45,25 +70,8 @@ module.exports = {
         }
     }, 
 
-    login: async (req, res) => {
-        const db = req.app.get('db')
-        const {username, password} = req.body
-        
-        let usernameExists = await db.check_username(username); 
-        usernameExists = usernameExists[0]
-
-        if (!usernameExists){
-            res.status(401).send('There is no account with this username. Are you sure you typed it in correctly? If you did, and you are still receiving this error message, please create an account :)')
-        } 
-        
-        const authenticated = bcrypt.compareSync(password, usernameExists.password)
-
-        if(authenticated){
-            delete usernameExists.password
-            req.session.user = usernameExists;//creating a user property on our session equal to foundUser^
-            res.status(202).send(req.session.user);
-        } else {
-            res.status(401).send('Password is incorrect')
-        }
+    logout: (req, res) => {
+        req.session.destroy(); 
+        res.status(200).send('The user has now been logged out. ')
     }
 }

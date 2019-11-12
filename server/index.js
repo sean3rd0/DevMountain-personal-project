@@ -9,8 +9,8 @@ const mainCtrl = require('./controllers/mainController')
 
 app.use(express.json())
 app.use(session({
-    resave: true, 
-    saveUninitialized: true, 
+    resave: false, 
+    saveUninitialized: false, 
     secret: SESSION_SECRET, 
     cookie: {
         maxAge: 1000 * 60 * 60
@@ -25,6 +25,9 @@ massive(CONNECTION_STRING).then(db => {
 
 app.post('/api/createaccount', authCtrl.createAccount)
 app.post('/api/login', authCtrl.login)
+app.post('/api/logout', authCtrl.logout)
+
+app.get('/api/currentpage/:username', mainCtrl.getCurrentPage)
 
 app.listen(SERVER_PORT, () => {
     console.log(`Listening on Port ${SERVER_PORT}`)

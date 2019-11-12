@@ -34,7 +34,7 @@ class CreateAccount extends React.Component{
                 confirmPasswordInput: ""
             })
             this.props.createUser(response.data)
-            this.props.history.push('/pages')
+            this.props.history.push(`/pages/${response.data.username}`)
         })
     }
 

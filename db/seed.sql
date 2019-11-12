@@ -43,6 +43,7 @@
 		-- file_text VARCHAR(250)
 	);
 	CREATE TABLE budr_pages (
+		--SEE THIS FIRST https://stackoverflow.com/questions/637894/constraint-for-only-one-record-marked-as-default 
 		page_id SERIAL PRIMARY KEY, 
 		person_id INTEGER REFERENCES budr_users (person_id),
 		page_title VARCHAR(50)

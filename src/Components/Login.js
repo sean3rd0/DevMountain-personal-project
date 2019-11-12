@@ -28,12 +28,12 @@ class Login extends React.Component {
                 passwordInput: ""
             })
             this.props.loginUser(response.data)
-            this.props.history.push('/pages')
+            this.props.history.push(`/pages/${response.data.username}`)
         })
+        .catch(err => console.log('this is the login error that came instead of a response: ', err))
     }
     
     render(){
-        console.log(this.state)
         return(
             <div className="login-component-wrapping-div">
                 <div className="login-component-input-container">

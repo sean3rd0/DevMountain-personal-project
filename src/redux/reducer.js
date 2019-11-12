@@ -37,8 +37,11 @@ const initialState = {
 
 const LOGIN_USER = "LOGIN_USER"
 const CREATE_USER = "CREATE_USER"
+const LOGOUT_USER = "LOGOUT_USER"
+const UPDATE_USER_INFO = "UPDATE_USER_INFO"
 
 export function loginUser(userObj){
+    // console.log('this is the argument that was passed into the loginUser function: ', userObj)
     return {
         type: LOGIN_USER, 
         payload: userObj
@@ -46,8 +49,22 @@ export function loginUser(userObj){
 }
 
 export function createUser(userObj){
+    console.log('this is the argument that was passed into the createUser function: ', userObj)
     return {
         type: CREATE_USER, 
+        payload: userObj
+    }
+}
+
+export function logoutUser(){
+    return {
+        type: LOGOUT_USER
+    }
+}
+
+export function updateUserInfo(userObj){
+    return {
+        type: UPDATE_USER_INFO, 
         payload: userObj
     }
 }
@@ -62,31 +79,65 @@ export default function reducer(state = initialState, action){
     // console.log('this is action.payload: ', action.payload)
     const {type, payload} = action
     switch(type) {
-        case CREATE_USER + '_FULFILLED': 
+        case CREATE_USER: 
         console.log('this is CREATE_USER action.type: ', action.type)
         console.log('this is CREATE_USER action.payload: ', action.payload)
             return {
                 ...state, 
                 user: {
                     ...state.user, 
-                    person_id: payload.person_id, 
+                    personId: payload.person_id, 
                     username: payload.username, 
                     password: payload.password
                 }, 
                 currentPage: {
                     ...state.currentPage, 
-                    page_id: payload.page_id, 
-                    page_title: payload.page_title
+                    personId: payload.person_id, 
+                    pageId: payload.page_id, 
+                    pageTitle: payload.page_title
                 }
+                
             }
+
         case LOGIN_USER: 
-        console.log('this is LOGIN_USER action.type: ', action.type)
-        console.log('this is LOGIN_USER action.payload: ', action.payload)
+        // console.log('this is LOGIN_USER action.type: ', action.type)
+        // console.log('this is LOGIN_USER action.payload: ', action.payload)
             return {
                 ...state, 
-                //add everything to state that could possibly be needed by this req.session.user. 
-                //yeah? or should I only add things that are needed IMMEDIATELY, and then wait for other axios calls to add other stuff?
+                user: {
+                    ...state.user, 
+                    personId: payload.person_id, 
+                    email: payload.email, 
+                    username: payload.username, 
+                    firstname: payload.firstname, 
+                    lastname: payload.lastname, 
+                    profilePic: payload.profile_pic
+                }, 
+                currentPage: {
+                    ...state.currentPage, 
+                    pageId: payload.page_id, 
+                    pageTitle: payload.page_title
+                }
             }
+
+        case LOGOUT_USER: 
+            return {
+                ...initialState
+            }
+
+        case UPDATE_USER_INFO: 
+        console.log('this is the UPDATE_USER_INFO action.payload: ', action.payload)
+            return {
+                ...state, 
+                user: {
+                    ...state.user, 
+                    email: payload.email, 
+                    firstname: payload.firstname, 
+                    lastname: payload.lastname, 
+                    profilePic: payload.profilePic
+                }
+            }
+        
         default: 
             return state
     }
