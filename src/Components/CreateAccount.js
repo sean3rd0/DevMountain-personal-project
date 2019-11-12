@@ -1,4 +1,5 @@
 import React from "react"
+import styled from "styled-components"
 import axios from "axios"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux"
@@ -27,7 +28,6 @@ class CreateAccount extends React.Component{
     handleCreateButtonClick(username, password, confirmPassword){
         axios.post('/api/createaccount', {username, password, confirmPassword})
         .then(response => {
-            console.log('this is the response.data from axios.post request to /api/createaccount in the CreateAccount component: ', response.data)
             this.setState({
                 usernameInput: "", 
                 passwordInput: "", 

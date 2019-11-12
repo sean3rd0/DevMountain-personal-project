@@ -28,6 +28,7 @@ app.post('/api/login', authCtrl.login)
 app.post('/api/logout', authCtrl.logout)
 
 app.get('/api/currentpage/:username', mainCtrl.getCurrentPage)
+app.put('/api/userinfo/:username', mainCtrl.updateUserInfo)
 
 app.listen(SERVER_PORT, () => {
     console.log(`Listening on Port ${SERVER_PORT}`)

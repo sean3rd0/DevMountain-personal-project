@@ -21,7 +21,6 @@ class UsernameDisplay extends React.Component {
 }
 
 const mapStateToProps = (reduxState) => {
-    console.log(`this is the UsernameDisplay reducer's reduxState: `, reduxState.reducer)
     return {
         profilePic: reduxState.reducer.user.profilePic,
         username: reduxState.reducer.user.username

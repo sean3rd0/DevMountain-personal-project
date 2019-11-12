@@ -22,7 +22,6 @@ class Login extends React.Component {
     handleLoginButtonClick(username, password){
         axios.post('/api/login', {username: `${username}`, password: `${password}`})
         .then(response => {
-            console.log('this is the response.data from axios.post to /api/login in the Login component: ', response.data)
             this.setState({
                 usernameInput: "", 
                 passwordInput: ""

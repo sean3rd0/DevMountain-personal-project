@@ -12,7 +12,7 @@ export default (
         <Route exact path="/" component={Login} />
         <Route path="/createaccount" component={CreateAccount} />
         <Route path="/pages/:username" component={CurrentlyViewedProfilePage} />
-        <Route path="/friends" component={UserList} />
-        <Route path="/settings" component={Settings} />
+        <Route path="/:username/friends" component={UserList} />
+        <Route path="/:username/settings" component={Settings} />
     </Switch>
 )

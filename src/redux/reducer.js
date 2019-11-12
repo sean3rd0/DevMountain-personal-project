@@ -38,10 +38,10 @@ const initialState = {
 const LOGIN_USER = "LOGIN_USER"
 const CREATE_USER = "CREATE_USER"
 const LOGOUT_USER = "LOGOUT_USER"
+const GET_CURRENT_PAGE = "GET_CURRENT_PAGE"
 const UPDATE_USER_INFO = "UPDATE_USER_INFO"
 
 export function loginUser(userObj){
-    // console.log('this is the argument that was passed into the loginUser function: ', userObj)
     return {
         type: LOGIN_USER, 
         payload: userObj
@@ -49,7 +49,6 @@ export function loginUser(userObj){
 }
 
 export function createUser(userObj){
-    console.log('this is the argument that was passed into the createUser function: ', userObj)
     return {
         type: CREATE_USER, 
         payload: userObj
@@ -59,6 +58,13 @@ export function createUser(userObj){
 export function logoutUser(){
     return {
         type: LOGOUT_USER
+    }
+}
+
+export function getCurrentPage(username){
+    return {
+        type: GET_CURRENT_PAGE, 
+        payload: username
     }
 }
 
@@ -72,16 +78,9 @@ export function updateUserInfo(userObj){
 
 
 export default function reducer(state = initialState, action){
-    // console.log('this is initialState: ', initialState)
-    // console.log('this is state: ', state)
-    // console.log('this is action: ', action)
-    // console.log('this is action.type: ', action.type)
-    // console.log('this is action.payload: ', action.payload)
     const {type, payload} = action
     switch(type) {
         case CREATE_USER: 
-        console.log('this is CREATE_USER action.type: ', action.type)
-        console.log('this is CREATE_USER action.payload: ', action.payload)
             return {
                 ...state, 
                 user: {
@@ -100,8 +99,6 @@ export default function reducer(state = initialState, action){
             }
 
         case LOGIN_USER: 
-        // console.log('this is LOGIN_USER action.type: ', action.type)
-        // console.log('this is LOGIN_USER action.payload: ', action.payload)
             return {
                 ...state, 
                 user: {
@@ -123,6 +120,18 @@ export default function reducer(state = initialState, action){
         case LOGOUT_USER: 
             return {
                 ...initialState
+            }
+
+        case GET_CURRENT_PAGE: 
+        console.log('this is the GET_CURRENT_PAGE payload: ', payload)
+            return {
+                ...state, 
+                currentPage: {
+                    ...state.currentPage, 
+                    pageId: payload.page_id, 
+                    personId: payload.person_id, 
+                    pageTitle: payload.page_title
+                }
             }
 
         case UPDATE_USER_INFO: 

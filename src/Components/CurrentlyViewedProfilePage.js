@@ -5,25 +5,37 @@ import UsernameDisplay from "./UsernameDisplay"
 import ProfilePagesDisplay from "./ProfilePagesDisplay"
 import ProfilePagePostTemplate from "./ProfilePagePostTemplate"
 import ProfilePageIndividualPost from "./ProfilePageIndividualPost"
-import createPostOnThisPage from "../redux/reducer"
-import editThisPostOnThisPage from "../redux/reducer"
 import {connect} from "react-redux"
+// import {createPostOnThisPage} from "../redux/reducer"
+// import {editThisPostOnThisPage} from "../redux/reducer"
 import {logoutUser} from "../redux/reducer"
+import {getCurrentPage} from "../redux/reducer"
 
 class CurrentlyViewedProfilePage extends React.Component {
     constructor(props){
         super(props)
+        this.state = {
+            // pageId: 0, 
+            // personId: 0, 
+            // pageTitle: ""
+        }
     }
 
     componentDidMount = () => {
         axios.get(`/api/currentpage/${this.props.match.params.username}`)
         .then(response => {
             this.props.getCurrentPage(response.data)
+            console.log('this is response.data: ', response.data)
+            this.setState({
+                pageId: response.data.pageId, 
+                personId: response.data.personId, 
+                pageTitle: response.data.pageTitle
+            })
         })
+        .catch(err => console.log(err))
     }
 
     handleLogoutButtonClick = () => {
-        // console.log('this is the this.props on Nav.js: ', this.props)
         axios.post('/api/logout')
         .then(res => {
             this.props.logoutUser()
@@ -35,15 +47,11 @@ class CurrentlyViewedProfilePage extends React.Component {
     }
 
     handleSettingsButtonClick = () => {
-        this.props.history.push('/settings')
+        this.props.history.push(`/${this.props.match.params.username}/settings`)
     }
 
     render(){
-        console.log('this is the CVPP component this.props', this.props)
         let mapOfPostsOnCurrentPage = this.props.postsOnCurrentPage.map((individualPost) => {
-            console.log('this is this.props.postsOnCurrentPage: ', this.props.postsOnCurrentPage)
-            console.log('this is the map of this.props.postsOnCurrentPage: ', mapOfPostsOnCurrentPage)
-            console.log('this is what happens for each iteration: ', individualPost)
             return (
                 <ProfilePageIndividualPost 
                 key={individualPost.postId}
@@ -117,7 +125,6 @@ class CurrentlyViewedProfilePage extends React.Component {
                 </div>
             )
         } else {
-            // console.log('this is the this.props on the CurrentlyViewedProfilePage: ', this.props)
             return (
                 <div>
                     <Nav 
@@ -125,6 +132,9 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
                     <UsernameDisplay />
+                    {/* <h1>{this.state.pageId}</h1>
+                    <h1>{this.state.personId}</h1>
+                    <h1>{this.state.pageTitle}</h1> */}
                     <ProfilePagesDisplay />
                     <ProfilePagePostTemplate />
                     {mapOfPostsOnCurrentPage} 
@@ -147,9 +157,10 @@ const mapStateToProps = (reduxState) => {
 } 
 
 const mapDispatchToProps = {
-    createPostOnThisPage,
-    editThisPostOnThisPage, 
-    logoutUser
+    // createPostOnThisPage,
+    // editThisPostOnThisPage, 
+    logoutUser, 
+    getCurrentPage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentlyViewedProfilePage)

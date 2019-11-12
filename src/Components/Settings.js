@@ -2,6 +2,7 @@ import React from "react"
 import UsernameDisplay from "./UsernameDisplay"
 import {connect} from "react-redux"
 import {updateUserInfo} from "../redux/reducer"
+import axios from "axios";
 
 class Settings extends React.Component {
     constructor(props){
@@ -28,12 +29,15 @@ class Settings extends React.Component {
     }
 
     handleSaveButtonClick = (profilePic, email, firstname, lastname) => {
-        this.props.updateUserInfo({profilePic, email, firstname, lastname})
-        this.setState({
-            profilePicInput: "", 
-            emailInput: "", 
-            firstnameInput: "", 
-            lastnameInput: ""
+        axios.put(`/api/userinfo/${this.props.match.params.username}`, {profilePic, email, firstname, lastname})
+        .then(response => {
+            this.setState({
+                profilePicInput: "", 
+                emailInput: "", 
+                firstnameInput: "", 
+                lastnameInput: ""
+            })
+            this.props.updateUserInfo(response.data)
         })
         this.handleEditSaveToggle()
     }
@@ -108,7 +112,7 @@ class Settings extends React.Component {
 }
 
 const mapStateToProps = (reduxState) => {
-    const {personId, email, username, firstname, lastname,} = reduxState.reducer.user
+    const {personId, email, username, firstname, lastname, profilePic} = reduxState.reducer.user
     const {pageId, pageTitle} = reduxState.reducer.currentPage
     return {
         personId, 
@@ -116,6 +120,7 @@ const mapStateToProps = (reduxState) => {
         username, 
         firstname, 
         lastname, 
+        profilePic,
         pageId, 
         pageTitle
     }

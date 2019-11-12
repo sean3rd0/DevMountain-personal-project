@@ -59,10 +59,7 @@ module.exports = {
                 }); 
                 usersFirstPage = usersFirstPage[0]; // (see lines 14 and 29)
 
-                // console.log('this is usersFirstPage:', usersFirstPage)
-
                 req.session.user = {...newlyCreatedAccount, ...usersFirstPage} // Now we create a user object on our req.session. Uncomment the line below to see that object.
-                console.log('this is the req.session.user: ', req.session.user)
                 res.status(200).send(req.session.user)
             } else {
                 res.status(401).send(`The passwords didn't match; please type them in again.`)
