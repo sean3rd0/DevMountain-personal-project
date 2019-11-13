@@ -30,6 +30,7 @@ app.delete('/api/:username/delete', authCtrl.deleteAccount)
 
 app.get('/api/currentpage/:username', mainCtrl.getCurrentPage)
 app.put('/api/userinfo/:username', mainCtrl.updateUserInfo)
+app.post('/api/:username/currentpage/posts', mainCtrl.createNewPost)
 
 app.listen(SERVER_PORT, () => {
     console.log(`Listening on Port ${SERVER_PORT}`)

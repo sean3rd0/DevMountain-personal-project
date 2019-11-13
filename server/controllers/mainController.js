@@ -23,5 +23,18 @@ module.exports = {
         updatedUserInfo = updatedUserInfo[0] 
 
         res.status(200).send(updatedUserInfo)
+    }, 
+
+    createNewPost: async (req, res) => {
+        const db = req.app.get('db') 
+        const {username} = req.params 
+        const {date, body} = req.body 
+        console.log('username date body: ', username, date, body)
+
+        let newPost = await db.create_new_post({username, date, body}) 
+        newPost = newPost[0]
+        console.log('NEWPOST: ', newPost)
+
+        res.status(200).send(newPost)
     }
 }

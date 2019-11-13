@@ -4,7 +4,7 @@ class ProfilePagesDisplay extends React.Component {
     render(){
         return(
             <div className="ProfilePagesDisplay-component-wrapping-div">
-                ProfilePagesDisplay
+                {/* ProfilePagesDisplay */}
             </div>
         )
     }

@@ -8,8 +8,7 @@ import ProfilePageIndividualPost from "./ProfilePageIndividualPost"
 import {connect} from "react-redux"
 // import {createPostOnThisPage} from "../redux/reducer"
 // import {editThisPostOnThisPage} from "../redux/reducer"
-import {logoutUser} from "../redux/reducer"
-import {getCurrentPage} from "../redux/reducer"
+import {logoutUser, getCurrentPage, createNewPost} from "../redux/reducer"
 
 class CurrentlyViewedProfilePage extends React.Component {
     constructor(props){
@@ -22,7 +21,6 @@ class CurrentlyViewedProfilePage extends React.Component {
         axios.get(`/api/currentpage/${this.props.match.params.username}`)
         .then(response => {
             this.props.getCurrentPage(response.data)
-            console.log('this is response.data: ', response.data)
         })
         .catch(err => console.log(err))
     }
@@ -42,14 +40,24 @@ class CurrentlyViewedProfilePage extends React.Component {
         this.props.history.push(`/${this.props.match.params.username}/settings`)
     }
 
+    handleNewPostSubmit = (dateInput, bodyTextarea) => {
+        axios.post(`/api/${this.props.match.params.username}/currentpage/posts`, {date: dateInput, body: bodyTextarea})
+        .then(response => {
+            console.log('response.data: ', response.data)
+            this.props.createNewPost({date: response.data.date, body: response.data.post_text})
+        })
+    }
+
     render(){
-        let mapOfPostsOnCurrentPage = this.props.postsOnCurrentPage.map((individualPost) => {
+        let mapOfPostsOnCurrentPage = this.props.postsOnCurrentPage.map((individualPost, index) => {
             return (
                 <ProfilePageIndividualPost 
-                key={individualPost.postId}
+                // key={individualPost.postId}
+                key={index}
                 postId={individualPost.postId}
                 pageId={individualPost.pageId}
-                postText={individualPost.postText}
+                date={individualPost.date}
+                body={individualPost.post_text}
                 photo1={individualPost.photo1}
                 video1={individualPost.video1}
                 />
@@ -67,9 +75,12 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                         
                     />
+                    <div>Posts in array; page.personId === user.personId</div>
                     <UsernameDisplay /> 
                     <ProfilePagesDisplay />
-                    <ProfilePagePostTemplate /> 
+                    <ProfilePagePostTemplate 
+                        handleNewPostSubmit={this.handleNewPostSubmit}
+                    /> 
                     {mapOfPostsOnCurrentPage}
                 </div>
             )
@@ -82,6 +93,7 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleLogoutButtonClick={this.handleLogoutButtonClick} 
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
+                    <div>Posts in array; page.personId !== user.personId</div>
                     <UsernameDisplay /> 
                     <ProfilePagesDisplay />
                     {mapOfPostsOnCurrentPage} 
@@ -97,9 +109,12 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleLogoutButtonClick={this.handleLogoutButtonClick} 
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
+                    <div>Posts not in array; page.personId === user.personId</div>
                     <UsernameDisplay /> 
                     <ProfilePagesDisplay />
-                    <ProfilePagePostTemplate /> 
+                    <ProfilePagePostTemplate  
+                        handleNewPostSubmit={this.handleNewPostSubmit}
+                    /> 
                 </div>
             )
         } else if (this.props.postsOnCurrentPage.length = 0 && this.props.currentPage.personId !== this.props.user.personId){
@@ -112,6 +127,7 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleLogoutButtonClick={this.handleLogoutButtonClick} 
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
+                    <div>Posts not in array; page.personId !== user.personId</div>
                     <UsernameDisplay /> 
                     <ProfilePagesDisplay /> 
                 </div>
@@ -123,7 +139,13 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleLogoutButtonClick={this.handleLogoutButtonClick} 
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
-                    <h3>{this.props.user.username}</h3>
+                    <div>Else</div>                    
+                    <UsernameDisplay /> 
+                    <ProfilePagesDisplay />
+                    <ProfilePagePostTemplate  
+                        handleNewPostSubmit={this.handleNewPostSubmit}
+                    /> 
+                    {mapOfPostsOnCurrentPage}
                 </div>
             )
         }
@@ -142,7 +164,8 @@ const mapDispatchToProps = {
     // createPostOnThisPage,
     // editThisPostOnThisPage, 
     logoutUser, 
-    getCurrentPage
+    getCurrentPage, 
+    createNewPost
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentlyViewedProfilePage)

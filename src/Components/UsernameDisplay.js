@@ -10,9 +10,8 @@ class UsernameDisplay extends React.Component {
         return(
             <div className="UsernameDisplay-component-wrapping-div">
                 <img 
-                    src={this.props.profilePic} 
+                    src={`${this.props.profilePic}`} 
                     alt="Profile Picture"
-                    //onClick edit?
                 ></img>
                 <h3>{this.props.username}</h3>
             </div>

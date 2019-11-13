@@ -13,6 +13,7 @@ const initialState = {
         */
     }, 
     following: [/*following_id, following_id, following_id, etc.*/], 
+    pagesOnCurrentProfile: [],
     currentPage: {
         /* page_id, 
         person_id, 
@@ -22,12 +23,14 @@ const initialState = {
         /* {
         post_id, 
         page_id, 
+        date, 
         post_text, 
         photo_1_id, 
         video_1_id
     }, {
         post_id, 
         page_id, 
+        date, 
         post_text, 
         photo_1_id, 
         video_1_id
@@ -39,7 +42,8 @@ const LOGIN_USER = "LOGIN_USER"
 const CREATE_USER = "CREATE_USER"
 const LOGOUT_USER = "LOGOUT_USER"
 const GET_CURRENT_PAGE = "GET_CURRENT_PAGE"
-const UPDATE_USER_INFO = "UPDATE_USER_INFO"
+const UPDATE_USER_INFO = "UPDATE_USER_INFO" 
+const CREATE_NEW_POST = "CREATE_NEW_POST"
 
 export function loginUser(userObj){
     return {
@@ -75,7 +79,12 @@ export function updateUserInfo(userObj){
     }
 }
 
-
+export function createNewPost(postObj){
+    return {
+        type: CREATE_NEW_POST, 
+        payload: postObj
+    }
+}
 
 export default function reducer(state = initialState, action){
     const {type, payload} = action
@@ -123,7 +132,6 @@ export default function reducer(state = initialState, action){
             }
 
         case GET_CURRENT_PAGE: 
-        console.log('this is the GET_CURRENT_PAGE payload: ', payload)
             return {
                 ...state, 
                 user: {
@@ -145,7 +153,6 @@ export default function reducer(state = initialState, action){
             }
 
         case UPDATE_USER_INFO: 
-        console.log('this is the UPDATE_USER_INFO action.payload: ', action.payload)
             return {
                 ...state, 
                 user: {
@@ -155,6 +162,15 @@ export default function reducer(state = initialState, action){
                     lastname: payload.lastname, 
                     profilePic: payload.profilePic
                 }
+            }
+
+        case CREATE_NEW_POST: 
+            return {
+                ...state, 
+                postsOnCurrentPage: [
+                    {date: payload.date, post_text: payload.body}, 
+                    ...state.postsOnCurrentPage
+                ]
             }
         
         default: 
