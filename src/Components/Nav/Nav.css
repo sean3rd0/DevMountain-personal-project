@@ -1,0 +1,50 @@
+.navbar-icon {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: rgba(255,255,255,.5);
+    font-size: 20px;
+    height: 35px;
+    width: 50px;
+    border: 2px solid rgba(255,255,255,.1);
+    border-radius: 5px;
+}
+
+.waffle {
+    display: none;
+}
+
+.menu {
+    height: 10vh;
+    width: 70px;
+    position: fixed;
+    top: 49px;
+    right: -70px;
+    z-index: 10;
+    transition: .3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.slide {
+    right: 0px;
+}
+
+@media (max-width: 450px) {
+    
+    .icon-only {
+        display: none;
+    }
+
+    .navbar-icon {
+        display: flex;
+    }
+
+    .navbar-menu {
+        display: none;
+    }
+
+}

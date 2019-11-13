@@ -1,7 +1,8 @@
 import React from "react" 
+import style from "styled-components"
 import UsernameDisplay from "./UsernameDisplay"
 import {connect} from "react-redux"
-import {updateUserInfo} from "../redux/reducer"
+import {updateUserInfo, getCurrentPage} from "../redux/reducer"
 import axios from "axios";
 
 class Settings extends React.Component {
@@ -14,6 +15,13 @@ class Settings extends React.Component {
             firstnameInput: "", 
             lastnameInput: ""
         }
+    }
+
+    componentDidMount = () => {
+        axios.get(`/api/currentpage/${this.props.match.params.username}`)
+        .then(response => {
+            this.props.getCurrentPage(response.data)
+        })
     }
     
     handleInputChange = (event) => {
@@ -31,13 +39,14 @@ class Settings extends React.Component {
     handleSaveButtonClick = (profilePic, email, firstname, lastname) => {
         axios.put(`/api/userinfo/${this.props.match.params.username}`, {profilePic, email, firstname, lastname})
         .then(response => {
+            console.log('this is the Settings handleSaveButtonClick response.data: ', response.data)
+            this.props.updateUserInfo(response.data)
             this.setState({
                 profilePicInput: "", 
                 emailInput: "", 
                 firstnameInput: "", 
                 lastnameInput: ""
             })
-            this.props.updateUserInfo(response.data)
         })
         this.handleEditSaveToggle()
     }
@@ -46,7 +55,31 @@ class Settings extends React.Component {
         this.props.history.push(`/pages/${this.props.username}`)
     }
 
+    handleDelete = () => {
+        axios.delete(`/api/${this.props.match.params.username}/delete`)
+        .then(response => {
+            alert('This account has been deleted. Goodbye.')
+            setTimeout(() => this.props.history.push(`/`), 2000)
+        })
+    }
+
     render(){
+        const EditAndDeleteDiv = style.div`
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+            align-items: center;
+            height: 56px; 
+        `
+        const EditAndDeleteButtons = style.button`
+            width: 50px; 
+        `
+
+        const ProfilePictureImgCircle = style.img`
+            height: 70px; 
+            width: 70px; 
+            border-radius: 50%; 
+        `
         if (this.state.editing === false) {
             return(
                 <div className="Settings-component-wrapping-div">
@@ -58,10 +91,9 @@ class Settings extends React.Component {
                             className="Settings-component-profile-pic-container"
                             onClick={this.handleMyProfilePicClick}
                         >
-                            <img 
-                                src={this.props.profilePic}
-                                alt="Profile picture"//What am I supposed to put here?
-                                //I know that at least I need to mapStateToProps and have access to the user part of state. Or the user on Session. 
+                            <ProfilePictureImgCircle 
+                                src={`${this.props.profilePic}`}
+                                alt="Profile picture"
                             />
                         </div>
                         <h4>Username: {this.props.username}</h4>
@@ -69,7 +101,10 @@ class Settings extends React.Component {
                         <h5>Last Name: {this.props.lastname}</h5>
                         <h5>Email: {this.props.email}</h5>
                     </div>
-                    <button onClick={this.handleEditSaveToggle}>Edit</button>
+                    <EditAndDeleteDiv>
+                        <EditAndDeleteButtons onClick={this.handleEditSaveToggle}>Edit</EditAndDeleteButtons>
+                        <EditAndDeleteButtons onClick={this.handleDelete}>Delete</EditAndDeleteButtons>
+                    </EditAndDeleteDiv>
                 </div>
             )
         } else {
@@ -127,6 +162,7 @@ const mapStateToProps = (reduxState) => {
 }
 
 const mapDispatchToProps = {
+    getCurrentPage, 
     updateUserInfo
 }
 

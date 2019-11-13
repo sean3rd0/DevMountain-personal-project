@@ -5,7 +5,7 @@ module.exports = {
         const db = req.app.get('db')
         const {username, password} = req.body
         
-        let getUserInfo = await db.get_user_info(username); 
+        let getUserInfo = await db.get_user_info({username}); 
         getUserInfo = getUserInfo[0]
         
         if (!getUserInfo){
@@ -70,5 +70,14 @@ module.exports = {
     logout: (req, res) => {
         req.session.destroy(); 
         res.status(200).send('The user has now been logged out. ')
+    },
+
+    deleteAccount: (req, res) => {
+        const db = req.app.get('db')
+        const {username} = req.params
+
+        db.delete_account({username})
+        req.session.destroy()
+        res.status(200).send('This account has now been deleted. Goodbye. ')
     }
 }

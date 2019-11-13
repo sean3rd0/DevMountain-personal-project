@@ -126,6 +126,16 @@ export default function reducer(state = initialState, action){
         console.log('this is the GET_CURRENT_PAGE payload: ', payload)
             return {
                 ...state, 
+                user: {
+                    ...state.user, 
+                    personId: payload.person_id, 
+                    email: payload.email, 
+                    username: payload.username, 
+                    firstname: payload.firstname, 
+                    lastname: payload.lastname, 
+                    profilePic: payload.profile_pic
+
+                }, 
                 currentPage: {
                     ...state.currentPage, 
                     pageId: payload.page_id, 

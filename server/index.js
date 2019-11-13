@@ -26,6 +26,7 @@ massive(CONNECTION_STRING).then(db => {
 app.post('/api/createaccount', authCtrl.createAccount)
 app.post('/api/login', authCtrl.login)
 app.post('/api/logout', authCtrl.logout)
+app.delete('/api/:username/delete', authCtrl.deleteAccount)
 
 app.get('/api/currentpage/:username', mainCtrl.getCurrentPage)
 app.put('/api/userinfo/:username', mainCtrl.updateUserInfo)

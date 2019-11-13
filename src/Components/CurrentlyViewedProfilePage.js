@@ -1,6 +1,6 @@
 import React from "react"
 import axios from "axios"
-import Nav from "./Nav"
+import Nav from "./Nav/Nav"
 import UsernameDisplay from "./UsernameDisplay" 
 import ProfilePagesDisplay from "./ProfilePagesDisplay"
 import ProfilePagePostTemplate from "./ProfilePagePostTemplate"
@@ -15,9 +15,6 @@ class CurrentlyViewedProfilePage extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            // pageId: 0, 
-            // personId: 0, 
-            // pageTitle: ""
         }
     }
 
@@ -26,11 +23,6 @@ class CurrentlyViewedProfilePage extends React.Component {
         .then(response => {
             this.props.getCurrentPage(response.data)
             console.log('this is response.data: ', response.data)
-            this.setState({
-                pageId: response.data.pageId, 
-                personId: response.data.personId, 
-                pageTitle: response.data.pageTitle
-            })
         })
         .catch(err => console.log(err))
     }
@@ -131,17 +123,7 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleLogoutButtonClick={this.handleLogoutButtonClick} 
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
-                    <UsernameDisplay />
-                    {/* <h1>{this.state.pageId}</h1>
-                    <h1>{this.state.personId}</h1>
-                    <h1>{this.state.pageTitle}</h1> */}
-                    <ProfilePagesDisplay />
-                    <ProfilePagePostTemplate />
-                    {mapOfPostsOnCurrentPage} 
-                    <div>o</div>
-                    <div>o</div>
-                    <div>o</div>
-                    <div>This is the CurrentlyViewedProfilePage, and none of the if statements matched... so I assume nobody is logged in? Idk why this would show up.</div>
+                    <h3>{this.props.user.username}</h3>
                 </div>
             )
         }

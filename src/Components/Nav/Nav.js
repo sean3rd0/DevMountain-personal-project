@@ -3,6 +3,7 @@ import styled from "styled-components"
 import {Link} from "react-router-dom"
 import axios from "axios";
 import {connect} from "react-redux"
+import "./Nav.css"
 
 
 class Nav extends React.Component {
@@ -17,6 +18,7 @@ class Nav extends React.Component {
         this.setState({
             showMenu: !this.state.showMenu
         })
+        console.log('this is this.state.showMenu: ', this.state.showMenu)
     }
 
     // handleLogoutButtonClick = () => {
@@ -48,12 +50,13 @@ class Nav extends React.Component {
             align-items: center;
             justify-content: space-between;
         `
-        const NavMenuItems = styled.div`
-            height: 100%;
-            display: flex; 
-            flex-direction: column;
-            justify-content: space-evenly; 
-        `
+        // const NavMenuItems = styled.div`
+        //     height: 100%;
+        //     display: flex; 
+        //     flex-direction: column; 
+        //     align-items: center; 
+        //     justify-content: space-evenly; 
+        // `
 
         const NavProfilePictureSide = styled.div`
             display: flex; 
@@ -69,21 +72,36 @@ class Nav extends React.Component {
             width: 70px;
         `
 
+        const HamburgerMenuItems = styled.button`
+            width: 60px;
+        `
+
         return(
             <NavComponent className="Nav-component-wrapping-div">
                 <Link to="/friends"><div className="Nav-component-friends-button">Friends</div></Link>
                 <ProfilePicAndMenu>
                     <NavProfilePictureSide className="Nav-component-profile-pic-container">
                         <ProfilePictureCircle 
-                            src={this.props.profilePic} 
+                            src={this.props.profilePic}
                             alt="Profile Picture"
                         />
                     </NavProfilePictureSide>
-                    <NavMenuItems>
-                        <button onClick={this.props.handleSettingsButtonClick}>Settings</button>
-                        <button onClick={this.props.handleLogoutButtonClick}>Logout</button>
-                    </NavMenuItems>
-                    
+                    <div className="navbar-menu">
+                        <button className="waffle" onClick={this.props.handleSettingsButtonClick}>Settings</button>
+                        <button className="waffle" onClick={this.props.handleLogoutButtonClick}>Logout</button>
+                    </div>
+                        <div className="navbar-icon" onClick={this.menuToggle}>
+                            &#9776;
+                        </div>
+                    <div className={
+                        this.state.showMenu ? 
+                        'menu slide' 
+                        : 
+                        'menu'
+                    }>
+                        <HamburgerMenuItems onClick={this.props.handleSettingsButtonClick}>Settings</HamburgerMenuItems>
+                        <HamburgerMenuItems onClick={this.props.handleLogoutButtonClick}>Logout</HamburgerMenuItems>
+                    </div>       
                 </ProfilePicAndMenu>
             </NavComponent>
         )
