@@ -3,7 +3,7 @@ import styled from "styled-components"
 import axios from "axios"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux"
-import {createUser} from "../redux/reducer"
+import {createUser} from "../../redux/reducer"
 
 class CreateAccount extends React.Component{
     constructor(props){
@@ -42,19 +42,22 @@ class CreateAccount extends React.Component{
         const {usernameInput, passwordInput, confirmPasswordInput} = this.state
         return(
             <div className="createaccount-component-wrapping-div">
-                <div className="createaccount-component-input-container">
+                <div className="input-container">
                 <input 
+                    className="inputs"
                     name="usernameInput"
                     onChange={event => this.handleInputChange(event)}
                     placeholder="JaneDoe1492"
                     />
                 <input 
+                    className="inputs"
                     name="passwordInput"
                     onChange={event => this.handleInputChange(event)}
                     placeholder="3x@mplPassw0rd"
                     type="password"
                 />
                 <input 
+                    className="inputs"
                     name="confirmPasswordInput"
                     onChange={event => this.handleInputChange(event)}
                     placeholder="3x@mplPassw0rd"

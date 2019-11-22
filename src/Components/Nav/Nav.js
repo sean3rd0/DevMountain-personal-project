@@ -87,8 +87,8 @@ class Nav extends React.Component {
                         />
                     </NavProfilePictureSide>
                     <div className="navbar-menu">
-                        <button className="waffle" onClick={this.props.handleSettingsButtonClick}>Settings</button>
-                        <button className="waffle" onClick={this.props.handleLogoutButtonClick}>Logout</button>
+                        <button className="icon-only" onClick={this.props.handleSettingsButtonClick}>Settings</button>
+                        <button className="icon-only" onClick={this.props.handleLogoutButtonClick}>Logout</button>
                     </div>
                         <div className="navbar-icon" onClick={this.menuToggle}>
                             &#9776;

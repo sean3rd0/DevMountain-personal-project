@@ -2,7 +2,8 @@ import React from "react"
 import axios from "axios"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux"
-import {loginUser} from "../redux/reducer"
+import "./Login.css"
+import {loginUser} from "../../redux/reducer"
 
 class Login extends React.Component {
     constructor(props){
@@ -22,6 +23,7 @@ class Login extends React.Component {
     handleLoginButtonClick(username, password){
         axios.post('/api/login', {username: `${username}`, password: `${password}`})
         .then(response => {
+            console.log('this is the password: ', password)
             this.setState({
                 usernameInput: "", 
                 passwordInput: ""
@@ -35,13 +37,15 @@ class Login extends React.Component {
     render(){
         return(
             <div className="login-component-wrapping-div">
-                <div className="login-component-input-container">
+                <div className="input-container">
                     <input 
+                        className="inputs"
                         name="usernameInput"
                         onChange={event => this.handleInputChange(event)}
                         placeholder="JaneDoe1492"
                     />
                     <input 
+                        className="inputs"
                         name="passwordInput"
                         onChange={event => this.handleInputChange(event)}
                         placeholder="3x@mplPassw0rd"
