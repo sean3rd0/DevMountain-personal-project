@@ -1,4 +1,6 @@
 import React from "react" 
+import axios from "axios"
+import {connect} from "react-redux"
 
 class ProfilePageIndividualPost extends React.Component {
     constructor(props){
@@ -23,7 +25,17 @@ class ProfilePageIndividualPost extends React.Component {
     }
 
     handleSave = (editDateInput, editBodyTextArea) => {
-        alert('You need to finish writing the ProfilePageIndividualPost handleSave fucntion. ')
+        console.log('this is this.props: ', this.props)
+        axios.put(`/api/posts/${this.props.postId}`, {pageId: this.props.pageId, date: editDateInput, body: editBodyTextArea})
+        .then(response => {
+            console.log('this is PPIP handleSave response.data: ', response.data)
+            this.props.editIndividualPost(response.data)
+        })
+        .then(response => {
+            this.setState({
+                editing: false
+            })
+        })
     } 
 
     handleDelete = () => {
@@ -81,4 +93,4 @@ class ProfilePageIndividualPost extends React.Component {
     }
 }
 
-export default ProfilePageIndividualPost
+export default (ProfilePageIndividualPost)

@@ -30,6 +30,7 @@ app.delete('/api/:username/delete', authCtrl.deleteAccount)
 
 app.get('/api/currentpage/:username', mainCtrl.getCurrentPage)
 app.get('/api/:personid/:pageid/posts', mainCtrl.getPostsOnCurrentPage)
+app.put('/api/posts/:postid', mainCtrl.editIndividualPost)
 app.put('/api/userinfo/:username', mainCtrl.updateUserInfo)
 app.post('/api/:personid/:pageid/posts', mainCtrl.createNewPost)
 

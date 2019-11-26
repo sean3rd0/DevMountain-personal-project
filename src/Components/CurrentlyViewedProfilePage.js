@@ -8,7 +8,7 @@ import ProfilePageIndividualPost from "./ProfilePageIndividualPost"
 import {connect} from "react-redux"
 // import {createPostOnThisPage} from "../redux/reducer"
 // import {editThisPostOnThisPage} from "../redux/reducer"
-import {logoutUser, getCurrentPage, getPostsOnCurrentPage, createNewPost} from "../redux/reducer"
+import {logoutUser, getCurrentPage, getPostsOnCurrentPage, createNewPost, editIndividualPost} from "../redux/reducer"
 
 class CurrentlyViewedProfilePage extends React.Component {
     constructor(props){
@@ -21,17 +21,12 @@ class CurrentlyViewedProfilePage extends React.Component {
         axios.get(`/api/currentpage/${this.props.match.params.username}`)
         .then(response => {
             this.props.getCurrentPage(response.data)
-            console.log('this is response.data: ', response.data)
             axios.get(`/api/${response.data.person_id}/${response.data.page_id}/posts`)
             .then(responseTwo => {
-            console.log('this is responseTwo.data: ', responseTwo.data)
                 this.props.getPostsOnCurrentPage(responseTwo.data)
             })
             .catch(err => console.log('this is the componentDidMount error from the INNER axios request: ', err))
         })
-        // .then(() => {
-        //     this.props.postsOnCurrentPage.map
-        // })
         .catch(err => console.log('this is the componentDidMount error from the OUTER axios request: ', err))
     }
 
@@ -61,21 +56,17 @@ class CurrentlyViewedProfilePage extends React.Component {
     }
 
     render(){
-        console.log('these are the redux state props, consisting of postsOnCurrentPage: ', this.props.postsOnCurrentPage)
         let mapOfPostsOnCurrentPage = this.props.postsOnCurrentPage.map((individualPost, index) => {
             return (
-                // individualPost.map((e, i) => {
-                //     <div>{i}</div>
-                // })
                 <ProfilePageIndividualPost 
-                // key={individualPost.postId}
                 key={index}
-                postId={individualPost.postId}
-                pageId={individualPost.pageId}
+                postId={individualPost.post_id}
+                pageId={individualPost.page_id}
                 date={individualPost.date}
                 body={individualPost.post_text}
                 photo1={individualPost.photo1}
                 video1={individualPost.video1}
+                editIndividualPost={this.props.editIndividualPost}
                 />
                 )
             });
@@ -182,7 +173,8 @@ const mapDispatchToProps = {
     logoutUser, 
     getCurrentPage, 
     getPostsOnCurrentPage, 
-    createNewPost
+    createNewPost, 
+    editIndividualPost
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentlyViewedProfilePage)

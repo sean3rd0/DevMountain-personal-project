@@ -44,6 +44,7 @@ const CREATE_USER = "CREATE_USER"
 const LOGOUT_USER = "LOGOUT_USER"
 const GET_CURRENT_PAGE = "GET_CURRENT_PAGE" 
 const GET_POSTS_ON_CURRENT_PAGE = "GET_POSTS_ON_CURRENT_PAGE"
+const EDIT_INDIVIDUAL_POST = "EDIT_INDIVIDUAL_POST"
 const UPDATE_USER_INFO = "UPDATE_USER_INFO" 
 const CREATE_NEW_POST = "CREATE_NEW_POST"
 
@@ -75,10 +76,16 @@ export function getCurrentPage(username){
 }
 
 export function getPostsOnCurrentPage(postsOnCurrentPage){
-    console.log('hello', postsOnCurrentPage)
     return {
         type: GET_POSTS_ON_CURRENT_PAGE, 
         payload: postsOnCurrentPage
+    }
+}
+
+export function editIndividualPost(responseData){
+    return {
+        type: EDIT_INDIVIDUAL_POST, 
+        payload: responseData
     }
 }
 
@@ -100,92 +107,102 @@ export default function reducer(state = initialState, action){
     const {type, payload} = action
     switch(type) {
         case CREATE_USER: 
-            return {
-                ...state, 
-                user: {
-                    ...state.user, 
-                    personId: payload.person_id, 
-                    username: payload.username, 
-                    password: payload.password
-                }, 
-                currentPage: {
-                    ...state.currentPage, 
-                    personId: payload.person_id, 
-                    pageid: payload.page_id, 
-                    pageTitle: payload.page_title
-                }
-                
+        return {
+            ...state, 
+            user: {
+                ...state.user, 
+                personId: payload.person_id, 
+                username: payload.username, 
+                password: payload.password
+            }, 
+            currentPage: {
+                ...state.currentPage, 
+                personId: payload.person_id, 
+                pageid: payload.page_id, 
+                pageTitle: payload.page_title
             }
-
+            
+        }
+        
         case LOGIN_USER: 
-            return {
-                ...state, 
-                user: {
-                    ...state.user, 
-                    personId: payload.person_id, 
-                    email: payload.email, 
-                    username: payload.username, 
-                    firstname: payload.firstname, 
-                    lastname: payload.lastname, 
-                    profilePic: payload.profile_pic
-                }, 
-                currentPage: {
-                    ...state.currentPage, 
-                    pageid: payload.page_id, 
-                    pageTitle: payload.page_title
-                }
+        return {
+            ...state, 
+            user: {
+                ...state.user, 
+                personId: payload.person_id, 
+                email: payload.email, 
+                username: payload.username, 
+                firstname: payload.firstname, 
+                lastname: payload.lastname, 
+                profilePic: payload.profile_pic
+            }, 
+            currentPage: {
+                ...state.currentPage, 
+                pageid: payload.page_id, 
+                pageTitle: payload.page_title
             }
-
+        }
+        
         case LOGOUT_USER: 
-            return {
-                ...initialState
-            }
-
+        return {
+            ...initialState
+        }
+        
         case GET_CURRENT_PAGE: 
-            return {
-                ...state, 
-                user: {
-                    ...state.user, 
-                    personId: payload.person_id, 
-                    email: payload.email, 
-                    username: payload.username, 
-                    firstname: payload.firstname, 
-                    lastname: payload.lastname, 
-                    profilePic: payload.profile_pic
-
-                }, 
-                currentPage: {
-                    ...state.currentPage, 
-                    pageid: payload.page_id, 
-                    personId: payload.person_id, 
-                    pageTitle: payload.page_title
-                }
+        return {
+            ...state, 
+            user: {
+                ...state.user, 
+                personId: payload.person_id, 
+                email: payload.email, 
+                username: payload.username, 
+                firstname: payload.firstname, 
+                lastname: payload.lastname, 
+                profilePic: payload.profile_pic
+                
+            }, 
+            currentPage: {
+                ...state.currentPage, 
+                pageid: payload.page_id, 
+                personId: payload.person_id, 
+                pageTitle: payload.page_title
             }
-
+        }
+        
         case GET_POSTS_ON_CURRENT_PAGE: 
-            return {
-                ...state, 
-                postsOnCurrentPage: payload
-            }
-
+        return {
+            ...state, 
+            postsOnCurrentPage: payload
+        }
+        
+        case EDIT_INDIVIDUAL_POST: 
+        console.log('this is the EDIT_INDIVIDUAL_POST payload: ', payload)
+        return {
+            ...state, 
+            postsOnCurrentPage: [
+                payload, 
+                ...state.postsOnCurrentPage
+            ]
+        }
+        
         case UPDATE_USER_INFO: 
-            return {
-                ...state, 
-                user: {
-                    ...state.user, 
-                    email: payload.email, 
-                    firstname: payload.firstname, 
-                    lastname: payload.lastname, 
-                    profilePic: payload.profilePic
-                }
+        return {
+            ...state, 
+            user: {
+                ...state.user, 
+                email: payload.email, 
+                firstname: payload.firstname, 
+                lastname: payload.lastname, 
+                profilePic: payload.profilePic
             }
-
+        }
+        
         case CREATE_NEW_POST: 
-            return {
-                ...state, 
-                postsOnCurrentPage: [
-                    {
-                        date: payload.date, 
+        return {
+            ...state, 
+            postsOnCurrentPage: [
+                {
+                    date: payload.date, 
                         post_text: payload.body
                     }, 
                     ...state.postsOnCurrentPage

@@ -19,3 +19,12 @@
       padding: 25px rgb(18, 73, 175);  
   } 
 }
+
+.ProfilePageIndividualPost-component-wrapping-div {
+  height: 200px;
+}
+
+.Edit-ProfilePageIndividualPost-component-wrapping-div {
+  height: 180px;
+  padding-top: 20px; 
+}
