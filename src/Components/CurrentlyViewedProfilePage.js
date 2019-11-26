@@ -8,7 +8,7 @@ import ProfilePageIndividualPost from "./ProfilePageIndividualPost"
 import {connect} from "react-redux"
 // import {createPostOnThisPage} from "../redux/reducer"
 // import {editThisPostOnThisPage} from "../redux/reducer"
-import {logoutUser, getCurrentPage, createNewPost} from "../redux/reducer"
+import {logoutUser, getCurrentPage, getPostsOnCurrentPage, createNewPost} from "../redux/reducer"
 
 class CurrentlyViewedProfilePage extends React.Component {
     constructor(props){
@@ -21,8 +21,18 @@ class CurrentlyViewedProfilePage extends React.Component {
         axios.get(`/api/currentpage/${this.props.match.params.username}`)
         .then(response => {
             this.props.getCurrentPage(response.data)
+            console.log('this is response.data: ', response.data)
+            axios.get(`/api/${response.data.person_id}/${response.data.page_id}/posts`)
+            .then(responseTwo => {
+            console.log('this is responseTwo.data: ', responseTwo.data)
+                this.props.getPostsOnCurrentPage(responseTwo.data)
+            })
+            .catch(err => console.log('this is the componentDidMount error from the INNER axios request: ', err))
         })
-        .catch(err => console.log(err))
+        // .then(() => {
+        //     this.props.postsOnCurrentPage.map
+        // })
+        .catch(err => console.log('this is the componentDidMount error from the OUTER axios request: ', err))
     }
 
     handleLogoutButtonClick = () => {
@@ -41,16 +51,22 @@ class CurrentlyViewedProfilePage extends React.Component {
     }
 
     handleNewPostSubmit = (dateInput, bodyTextarea) => {
-        axios.post(`/api/${this.props.match.params.username}/currentpage/posts`, {date: dateInput, body: bodyTextarea})
+        axios.post(`/api/${this.props.currentPage.personId}/${this.props.currentPage.pageid}/posts`, {date: dateInput, body: bodyTextarea})
         .then(response => {
-            console.log('response.data: ', response.data)
             this.props.createNewPost({date: response.data.date, body: response.data.post_text})
+        })
+        .catch(err => {
+            console.log('This is the error that came back from the CVPP handleNewPostSubmit function / axios request: ', err)
         })
     }
 
     render(){
+        console.log('these are the redux state props, consisting of postsOnCurrentPage: ', this.props.postsOnCurrentPage)
         let mapOfPostsOnCurrentPage = this.props.postsOnCurrentPage.map((individualPost, index) => {
             return (
+                // individualPost.map((e, i) => {
+                //     <div>{i}</div>
+                // })
                 <ProfilePageIndividualPost 
                 // key={individualPost.postId}
                 key={index}
@@ -165,6 +181,7 @@ const mapDispatchToProps = {
     // editThisPostOnThisPage, 
     logoutUser, 
     getCurrentPage, 
+    getPostsOnCurrentPage, 
     createNewPost
 }
 

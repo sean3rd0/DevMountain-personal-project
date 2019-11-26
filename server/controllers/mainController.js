@@ -13,6 +13,20 @@ module.exports = {
         res.status(200).send(response)
     }, 
 
+    getPostsOnCurrentPage: async (req, res) => {
+        console.log("HOWHOWHOWHOWHOWHOWHOWHOWHOWHOWHWOHWOHWOWHOWHOWHOWHOWHOWHOWHOWHOWHOWHOWHOWHWOHOWHOWHOWHOWHOWHOWHOWHWOHWOHWOHWOHWOHWHOOHWOWHOWHHOWHWOHOWOHOWHOHWOWHHOWHOWOHOWHOWHOWHOHOWWHWHWOWOHWOWHOWOOWHOWHOWOOWHOHWOHOWHOHWO")
+        const db = req.app.get('db') 
+        const {pageid} = req.params; 
+        console.log('this is the pageid, which is from the req.params: ', pageid)
+
+        let postsOnCurrentPage = await db.get_posts_on_current_page({pageid}) 
+        
+        console.log('POSTSONCURRENTPAGE: ', postsOnCurrentPage)
+        let response = [...postsOnCurrentPage] 
+        console.log('RESPONSE: ', response)
+        res.status(200).send(response)
+    },
+
     updateUserInfo: async (req, res) => {
         const db = req.app.get('db')
         const {username} = req.params
@@ -27,14 +41,14 @@ module.exports = {
 
     createNewPost: async (req, res) => {
         const db = req.app.get('db') 
-        const {username} = req.params 
+        const {personid, pageid} = req.params 
         const {date, body} = req.body 
-        console.log('username date body: ', username, date, body)
-
-        let newPost = await db.create_new_post({username, date, body}) 
+        console.log('personid, pageid, date, body: ', personid, pageid, date, body)
+        let newPost = await db.create_new_post({personid, pageid, date, body}) 
         newPost = newPost[0]
-        console.log('NEWPOST: ', newPost)
+        console.log('newPost: ', newPost)
 
         res.status(200).send(newPost)
+        // res.sendStatus(200)
     }
 }

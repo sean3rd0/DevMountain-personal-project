@@ -1,9 +1,13 @@
 INSERT INTO budr_posts (
-    date, 
-    post_text
+    person_id, 
+    page_id, 
+    post_text,
+    date
 ) VALUES (
-    ${date}, 
-    ${body}
+    ${personid},
+    ${pageid},
+    ${body},
+    ${date} 
 )
 
 returning *; 

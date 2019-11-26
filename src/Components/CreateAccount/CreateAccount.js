@@ -43,26 +43,26 @@ class CreateAccount extends React.Component{
         return(
             <div className="createaccount-component-wrapping-div">
                 <div className="input-container">
-                <input 
-                    className="inputs"
-                    name="usernameInput"
-                    onChange={event => this.handleInputChange(event)}
-                    placeholder="JaneDoe1492"
+                    <input 
+                        className="inputs"
+                        name="usernameInput"
+                        onChange={event => this.handleInputChange(event)}
+                        placeholder="JaneDoe1492"
                     />
-                <input 
-                    className="inputs"
-                    name="passwordInput"
-                    onChange={event => this.handleInputChange(event)}
-                    placeholder="3x@mplPassw0rd"
-                    type="password"
-                />
-                <input 
-                    className="inputs"
-                    name="confirmPasswordInput"
-                    onChange={event => this.handleInputChange(event)}
-                    placeholder="3x@mplPassw0rd"
-                    type="password"
-                />
+                    <input 
+                        className="inputs"
+                        name="passwordInput"
+                        onChange={event => this.handleInputChange(event)}
+                        placeholder="3x@mplPassw0rd"
+                        type="password"
+                    />
+                    <input 
+                        className="inputs"
+                        name="confirmPasswordInput"
+                        onChange={event => this.handleInputChange(event)}
+                        placeholder="3x@mplPassw0rd"
+                        type="password"
+                    />
                 </div>
                 <button
                     onClick={() => this.handleCreateButtonClick(usernameInput, passwordInput, confirmPasswordInput)}

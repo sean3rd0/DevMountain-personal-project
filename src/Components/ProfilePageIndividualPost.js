@@ -10,6 +10,10 @@ class ProfilePageIndividualPost extends React.Component {
                 <div>
                     <p>{this.props.body}</p>
                 </div>
+                <div>
+                    <button>Edit</button>
+                    <button>Delete</button>
+                </div>
             </div>
         )
     }

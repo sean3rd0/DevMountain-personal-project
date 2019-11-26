@@ -1,4 +1,5 @@
 import axios from "axios"
+import { get } from "http"
 
 const initialState = {
     user: {
@@ -41,7 +42,8 @@ const initialState = {
 const LOGIN_USER = "LOGIN_USER"
 const CREATE_USER = "CREATE_USER"
 const LOGOUT_USER = "LOGOUT_USER"
-const GET_CURRENT_PAGE = "GET_CURRENT_PAGE"
+const GET_CURRENT_PAGE = "GET_CURRENT_PAGE" 
+const GET_POSTS_ON_CURRENT_PAGE = "GET_POSTS_ON_CURRENT_PAGE"
 const UPDATE_USER_INFO = "UPDATE_USER_INFO" 
 const CREATE_NEW_POST = "CREATE_NEW_POST"
 
@@ -69,6 +71,14 @@ export function getCurrentPage(username){
     return {
         type: GET_CURRENT_PAGE, 
         payload: username
+    }
+}
+
+export function getPostsOnCurrentPage(postsOnCurrentPage){
+    console.log('hello', postsOnCurrentPage)
+    return {
+        type: GET_POSTS_ON_CURRENT_PAGE, 
+        payload: postsOnCurrentPage
     }
 }
 
@@ -101,7 +111,7 @@ export default function reducer(state = initialState, action){
                 currentPage: {
                     ...state.currentPage, 
                     personId: payload.person_id, 
-                    pageId: payload.page_id, 
+                    pageid: payload.page_id, 
                     pageTitle: payload.page_title
                 }
                 
@@ -121,7 +131,7 @@ export default function reducer(state = initialState, action){
                 }, 
                 currentPage: {
                     ...state.currentPage, 
-                    pageId: payload.page_id, 
+                    pageid: payload.page_id, 
                     pageTitle: payload.page_title
                 }
             }
@@ -146,10 +156,16 @@ export default function reducer(state = initialState, action){
                 }, 
                 currentPage: {
                     ...state.currentPage, 
-                    pageId: payload.page_id, 
+                    pageid: payload.page_id, 
                     personId: payload.person_id, 
                     pageTitle: payload.page_title
                 }
+            }
+
+        case GET_POSTS_ON_CURRENT_PAGE: 
+            return {
+                ...state, 
+                postsOnCurrentPage: payload
             }
 
         case UPDATE_USER_INFO: 
@@ -168,7 +184,10 @@ export default function reducer(state = initialState, action){
             return {
                 ...state, 
                 postsOnCurrentPage: [
-                    {date: payload.date, post_text: payload.body}, 
+                    {
+                        date: payload.date, 
+                        post_text: payload.body
+                    }, 
                     ...state.postsOnCurrentPage
                 ]
             }
