@@ -17,11 +17,20 @@ class ProfilePagePostTemplate extends React.Component {
         })
     }
 
+    handleNewPostSubmit = (dateInput, bodyTextarea) => {
+        this.props.handleNewPostSubmit(dateInput, bodyTextarea)
+        this.setState({
+            dateInput: "", 
+            bodyTextarea: ""
+        })
+    }
+
     render(){
         return(
             <div className="ProfilePagePostTemplate-component-wrapping-div">
                 <div>
                     <input 
+                        value={this.state.dateInput}
                         name="dateInput"
                         placeholder="dd/mm/yyyy"
                         onChange={event => this.handleChange(event)}
@@ -29,12 +38,13 @@ class ProfilePagePostTemplate extends React.Component {
                 </div>
                 <div>
                     <textarea 
+                        value={this.state.bodyTextarea}
                         name="bodyTextarea"
                         placeholder="What do you want to remember from today?"
                         onChange={event => this.handleChange(event)}
                     /> 
                 </div>
-                <button onClick={() => this.props.handleNewPostSubmit(this.state.dateInput, this.state.bodyTextarea)}
+                <button onClick={() => this.handleNewPostSubmit(this.state.dateInput, this.state.bodyTextarea)}
                 >Save</button>
             </div>
         )
