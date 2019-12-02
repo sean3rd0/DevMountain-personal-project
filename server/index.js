@@ -33,6 +33,7 @@ app.get('/api/:personid/:pageid/posts', mainCtrl.getPostsOnCurrentPage)
 app.put('/api/posts/:postid', mainCtrl.editIndividualPost)
 app.put('/api/userinfo/:username', mainCtrl.updateUserInfo)
 app.post('/api/:personid/:pageid/posts', mainCtrl.createNewPost)
+app.delete('/api/:pageid/:postid', mainCtrl.deleteIndividualPost)
 
 app.listen(SERVER_PORT, () => {
     console.log(`Listening on Port ${SERVER_PORT}`)

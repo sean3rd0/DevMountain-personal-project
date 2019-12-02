@@ -44,7 +44,7 @@ const CREATE_USER = "CREATE_USER"
 const LOGOUT_USER = "LOGOUT_USER"
 const GET_CURRENT_PAGE = "GET_CURRENT_PAGE" 
 const GET_POSTS_ON_CURRENT_PAGE = "GET_POSTS_ON_CURRENT_PAGE"
-const EDIT_INDIVIDUAL_POST = "EDIT_INDIVIDUAL_POST"
+const RETURN_UPDATED_POSTS_ARRAY = "RETURN_UPDATED_POSTS_ARRAY"
 const UPDATE_USER_INFO = "UPDATE_USER_INFO" 
 const CREATE_NEW_POST = "CREATE_NEW_POST"
 
@@ -82,9 +82,9 @@ export function getPostsOnCurrentPage(postsOnCurrentPage){
     }
 }
 
-export function editIndividualPost(responseData){
+export function returnUpdatedPostsArray(responseData){
     return {
-        type: EDIT_INDIVIDUAL_POST, 
+        type: RETURN_UPDATED_POSTS_ARRAY, 
         payload: responseData
     }
 }
@@ -175,13 +175,11 @@ export default function reducer(state = initialState, action){
             postsOnCurrentPage: payload
         }
         
-        case EDIT_INDIVIDUAL_POST: 
-        console.log('this is the EDIT_INDIVIDUAL_POST payload: ', payload)
+        case RETURN_UPDATED_POSTS_ARRAY: 
         return {
             ...state, 
             postsOnCurrentPage: [
-                payload, 
-                ...state.postsOnCurrentPage
+                payload
             ]
         }
         

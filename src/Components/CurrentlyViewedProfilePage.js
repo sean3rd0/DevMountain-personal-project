@@ -6,9 +6,7 @@ import ProfilePagesDisplay from "./ProfilePagesDisplay"
 import ProfilePagePostTemplate from "./ProfilePagePostTemplate"
 import ProfilePageIndividualPost from "./ProfilePageIndividualPost"
 import {connect} from "react-redux"
-// import {createPostOnThisPage} from "../redux/reducer"
-// import {editThisPostOnThisPage} from "../redux/reducer"
-import {logoutUser, getCurrentPage, getPostsOnCurrentPage, createNewPost, editIndividualPost} from "../redux/reducer"
+import {logoutUser, getCurrentPage, getPostsOnCurrentPage, createNewPost, returnUpdatedPostsArray} from "../redux/reducer"
 
 class CurrentlyViewedProfilePage extends React.Component {
     constructor(props){
@@ -29,6 +27,20 @@ class CurrentlyViewedProfilePage extends React.Component {
         })
         .catch(err => console.log('this is the componentDidMount error from the OUTER axios request: ', err))
     }
+
+    componentDidUpdate = () => {
+        axios.get(`/api/currentpage/${this.props.match.params.username}`)
+        .then(response => {
+            this.props.getCurrentPage(response.data)
+            axios.get(`/api/${response.data.person_id}/${response.data.page_id}/posts`)
+            .then(responseTwo => {
+                this.props.getPostsOnCurrentPage(responseTwo.data)
+            })
+            .catch(err => console.log('this is the componentDidMount error from the INNER axios request: ', err))
+        })
+        .catch(err => console.log('this is the componentDidMount error from the OUTER axios request: ', err))
+    }
+
 
     handleLogoutButtonClick = () => {
         axios.post('/api/logout')
@@ -55,6 +67,25 @@ class CurrentlyViewedProfilePage extends React.Component {
         })
     }
 
+    handleEditedPostSave = (postId, pageId, editDateInput, editBodyTextArea) => {
+        axios.put(`/api/posts/${postId}`, {pageId: pageId, date: editDateInput, body: editBodyTextArea})
+        .then(response => {
+            this.props.returnUpdatedPostsArray(response.data)
+        })
+        .catch(err => console.log(err))
+    }
+
+    handleDelete = (pageId, postId) => {
+        axios.delete(`/api/${pageId}/${postId}`)
+        .then(response => {
+            console.log('this is the handleDelete axios.delete response: ', response)
+            this.props.returnUpdatedPostsArray(response.data)
+        })
+        .catch(err => {
+            console.log('This is the error that resulted from the axios.delete request to /api/${pageId}/${postId}: ', err)
+        })
+    }
+
     render(){
         let mapOfPostsOnCurrentPage = this.props.postsOnCurrentPage.map((individualPost, index) => {
             return (
@@ -66,7 +97,9 @@ class CurrentlyViewedProfilePage extends React.Component {
                 body={individualPost.post_text}
                 photo1={individualPost.photo1}
                 video1={individualPost.video1}
-                editIndividualPost={this.props.editIndividualPost}
+                handleEditedPostSave={this.handleEditedPostSave}
+                returnUpdatedPostsArray={this.props.returnUpdatedPostsArray}
+                handleDelete={this.handleDelete}
                 />
                 )
             });
@@ -82,8 +115,7 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                         
                     />
-                    <div>Posts in array; page.personId === user.personId</div>
-                    <UsernameDisplay /> 
+                    <UsernameDisplay className="username-display"/> 
                     <ProfilePagesDisplay />
                     <ProfilePagePostTemplate 
                         handleNewPostSubmit={this.handleNewPostSubmit}
@@ -100,8 +132,7 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleLogoutButtonClick={this.handleLogoutButtonClick} 
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
-                    <div>Posts in array; page.personId !== user.personId</div>
-                    <UsernameDisplay /> 
+                    <UsernameDisplay className="username-display"/> 
                     <ProfilePagesDisplay />
                     {mapOfPostsOnCurrentPage} 
                 </div>
@@ -116,8 +147,7 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleLogoutButtonClick={this.handleLogoutButtonClick} 
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
-                    <div>Posts not in array; page.personId === user.personId</div>
-                    <UsernameDisplay /> 
+                    <UsernameDisplay className="username-display"/> 
                     <ProfilePagesDisplay />
                     <ProfilePagePostTemplate  
                         handleNewPostSubmit={this.handleNewPostSubmit}
@@ -134,8 +164,7 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleLogoutButtonClick={this.handleLogoutButtonClick} 
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
-                    <div>Posts not in array; page.personId !== user.personId</div>
-                    <UsernameDisplay /> 
+                    <UsernameDisplay className="username-display"/> 
                     <ProfilePagesDisplay /> 
                 </div>
             )
@@ -146,8 +175,7 @@ class CurrentlyViewedProfilePage extends React.Component {
                         handleLogoutButtonClick={this.handleLogoutButtonClick} 
                         handleSettingsButtonClick={this.handleSettingsButtonClick}
                     />
-                    <div>Else</div>                    
-                    <UsernameDisplay /> 
+                    <UsernameDisplay className="username-display"/> 
                     <ProfilePagesDisplay />
                     <ProfilePagePostTemplate  
                         handleNewPostSubmit={this.handleNewPostSubmit}
@@ -174,7 +202,7 @@ const mapDispatchToProps = {
     getCurrentPage, 
     getPostsOnCurrentPage, 
     createNewPost, 
-    editIndividualPost
+    returnUpdatedPostsArray
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentlyViewedProfilePage)

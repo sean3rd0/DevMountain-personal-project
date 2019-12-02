@@ -67,6 +67,7 @@ class Nav extends React.Component {
         `
 
         const ProfilePictureCircle = styled.img`
+            background: gray; 
             border-radius: 50%;
             height: 70px; 
             width: 70px;
@@ -84,11 +85,13 @@ class Nav extends React.Component {
                         <ProfilePictureCircle 
                             src={this.props.profilePic}
                             alt="Profile Picture"
+                            width="60"
+                            height="60"
                         />
                     </NavProfilePictureSide>
                     <div className="navbar-menu">
-                        <button className="icon-only" onClick={this.props.handleSettingsButtonClick}>Settings</button>
-                        <button className="icon-only" onClick={this.props.handleLogoutButtonClick}>Logout</button>
+                        <button className="navbar-buttons" onClick={this.props.handleSettingsButtonClick}>Settings</button>
+                        <button className="navbar-buttons" onClick={this.props.handleLogoutButtonClick}>Logout</button>
                     </div>
                         <div className="navbar-icon" onClick={this.menuToggle}>
                             &#9776;

@@ -4,4 +4,5 @@ SET post_text = ${body},
 WHERE post_id = ${postid}; 
 
 SELECT * FROM budr_posts
-WHERE page_id = ${pageId};
+WHERE page_id = ${pageId}
+ORDER BY post_id DESC;

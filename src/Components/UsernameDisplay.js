@@ -9,10 +9,12 @@ class UsernameDisplay extends React.Component {
     render(){
         return(
             <div className="UsernameDisplay-component-wrapping-div">
-                <img 
-                    src={`${this.props.profilePic}`} 
+                <img className="UsernameDisplay-component-profile-picture"
+                    src={this.props.profilePic}
                     alt="Profile Picture"
-                ></img>
+                    width="90"
+                    height="90"
+                    ></img>
                 <h3>{this.props.username}</h3>
             </div>
         )

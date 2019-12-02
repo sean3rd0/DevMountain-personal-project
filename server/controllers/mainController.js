@@ -2,9 +2,6 @@ module.exports = {
     getCurrentPage: async (req, res) => {
         const db = req.app.get('db')
         const {username} = req.params
-        
-        // let landingPage = await db.get_landing_page(username)
-        // landingPage = landingPage[0]
 
         let userInfo = await db.get_user_info({username})
         userInfo = userInfo[0]
@@ -28,10 +25,18 @@ module.exports = {
         const {postid} = req.params
         const {pageId, date, body} = req.body
 
-        let editedIndividualPost = await db.edit_individual_post({postid: postid, pageId: pageId, date: date, body: body})
-        editedIndividualPost = editedIndividualPost[0]
+        let arrayOfPostsWithEditedPost = await db.edit_individual_post({postid: postid, pageId: pageId, date: date, body: body})
 
-        res.status(200).send(editedIndividualPost)
+        res.status(200).send(arrayOfPostsWithEditedPost)
+    },
+
+    deleteIndividualPost: async (req, res) => {
+        const db = req.app.get('db')
+        const {pageid, postid} = req.params
+
+        let arrayOfPostsNowThatThisPostHasBeenDeleted = await db.delete_individual_post({postId: postid, pageId: pageid})
+
+        res.status(200).send(arrayOfPostsNowThatThisPostHasBeenDeleted)
     },
 
     updateUserInfo: async (req, res) => {
@@ -53,6 +58,5 @@ module.exports = {
         newPost = newPost[0]
         
         res.status(200).send(newPost)
-        // res.sendStatus(200)
     }
 }

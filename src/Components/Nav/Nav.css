@@ -11,6 +11,15 @@
     border-radius: 5px;
 }
 
+.navbar-menu {
+    display: flex; 
+    flex-direction: row;
+}
+
+.navbar-buttons {
+    margin: 0 15px; 
+}
+
 .waffle {
     display: none;
 }
@@ -19,7 +28,7 @@
     height: 10vh;
     width: 70px;
     position: fixed;
-    top: 49px;
+    top: 100px;
     right: -70px;
     z-index: 10;
     transition: .3s;
@@ -35,7 +44,7 @@
 
 @media (max-width: 450px) {
     
-    .icon-only {
+    .navbar-buttons {
         display: none;
     }
 

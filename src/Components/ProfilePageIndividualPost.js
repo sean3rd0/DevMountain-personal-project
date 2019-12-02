@@ -24,23 +24,12 @@ class ProfilePageIndividualPost extends React.Component {
         })
     }
 
-    handleSave = (editDateInput, editBodyTextArea) => {
-        console.log('this is this.props: ', this.props)
-        axios.put(`/api/posts/${this.props.postId}`, {pageId: this.props.pageId, date: editDateInput, body: editBodyTextArea})
-        .then(response => {
-            console.log('this is PPIP handleSave response.data: ', response.data)
-            this.props.editIndividualPost(response.data)
-        })
-        .then(response => {
-            this.setState({
-                editing: false
-            })
+    handleSave = (postId, pageId, editDateInput, editBodyTextArea) => {
+        this.props.handleEditedPostSave(postId, pageId, editDateInput, editBodyTextArea)
+        this.setState({
+            editing: false
         })
     } 
-
-    handleDelete = () => {
-        alert('You need to finish writing the ProfilePageIndividualPost handleDelete fucntion. ')
-    }
 
     render(){
         if (this.state.editing) {
@@ -62,15 +51,15 @@ class ProfilePageIndividualPost extends React.Component {
                     </div>
                     <div>
                         <button 
-                            onClick={() => this.handleSave(this.state.editDateInput, this.state.editBodyTextArea)}
+                            onClick={() => this.handleSave(this.props.postId, this.props.pageId, this.state.editDateInput, this.state.editBodyTextArea)}
                         >Save</button>
                         <button 
-                            onClick={this.handleDelete}
+                            onClick={() => this.props.handleDelete(this.props.pageId, this.props.postId)}
                         >Delete</button>
                     </div>
                 </div>
             )
-        } else {
+        } else { 
             return(
                 <div className="ProfilePageIndividualPost-component-wrapping-div">
                     <div>
@@ -84,7 +73,7 @@ class ProfilePageIndividualPost extends React.Component {
                             onClick={this.handleEdit}
                         >Edit</button>
                         <button 
-                            onClick={this.handleDelete}
+                            onClick={() => this.props.handleDelete(this.props.pageId, this.props.postId)}
                         >Delete</button>
                     </div>
                 </div>
@@ -93,4 +82,4 @@ class ProfilePageIndividualPost extends React.Component {
     }
 }
 
-export default (ProfilePageIndividualPost)
+export default connect()(ProfilePageIndividualPost)
