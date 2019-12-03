@@ -1,6 +1,6 @@
 import React from "react" 
-import axios from "axios"
 import {connect} from "react-redux"
+import style from "styled-components"
 
 class ProfilePageIndividualPost extends React.Component {
     constructor(props){
@@ -32,9 +32,32 @@ class ProfilePageIndividualPost extends React.Component {
     } 
 
     render(){
+        const ProfilePageComponentWrappingDiv = style.div`
+            box-sizing: border-box; 
+            border: 2px solid rgba(65, 65, 65, 0.1);
+            padding: 20px 5px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+        `
+        const DateDisplay = style.h5`
+            height: 1px; 
+        `
+        const ProfilePageComponentButtonWrappingDiv = style.div`
+            display: flex; 
+            flex-direction: row; 
+            box-sizing: border-box; 
+            padding: 14px; 
+            width: 175px; 
+            justify-content: space-evenly; 
+        `
+        // const ProfilePageComponentButtons = style.button`
+
+        // `
         if (this.state.editing) {
             return (
-                <div className="Edit-ProfilePageIndividualPost-component-wrapping-div">
+                <ProfilePageComponentWrappingDiv className="Edit-ProfilePageIndividualPost-component-wrapping-div">
                     <div>
                         <input
                             name="editDateInput"
@@ -49,34 +72,38 @@ class ProfilePageIndividualPost extends React.Component {
                             placeholder={this.props.body}
                         />
                     </div>
-                    <div>
+                    <ProfilePageComponentButtonWrappingDiv>
                         <button 
+                            className="individual-post-button" 
                             onClick={() => this.handleSave(this.props.postId, this.props.pageId, this.state.editDateInput, this.state.editBodyTextArea)}
                         >Save</button>
                         <button 
+                            className="individual-post-button" 
                             onClick={() => this.props.handleDelete(this.props.pageId, this.props.postId)}
                         >Delete</button>
-                    </div>
-                </div>
+                    </ProfilePageComponentButtonWrappingDiv>
+                </ProfilePageComponentWrappingDiv>
             )
         } else { 
             return(
-                <div className="ProfilePageIndividualPost-component-wrapping-div">
+                <ProfilePageComponentWrappingDiv className="ProfilePageIndividualPost-component-wrapping-div">
                     <div>
-                        <h5>{this.props.date}</h5>
+                        <DateDisplay>{this.props.date}</DateDisplay>
                     </div>
                     <div>
                         <p>{this.props.body}</p>
                     </div>
-                    <div>
-                        <button
+                    <ProfilePageComponentButtonWrappingDiv>
+                        <button 
+                            className="individual-post-button"
                             onClick={this.handleEdit}
                         >Edit</button>
                         <button 
+                            className="individual-post-button" 
                             onClick={() => this.props.handleDelete(this.props.pageId, this.props.postId)}
                         >Delete</button>
-                    </div>
-                </div>
+                    </ProfilePageComponentButtonWrappingDiv>
+                </ProfilePageComponentWrappingDiv>
             )
         }
     }
