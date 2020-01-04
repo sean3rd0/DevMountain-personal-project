@@ -63,18 +63,18 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToProps = (reduxState) => {
-    const {user, following, currentPage, postsOnCurrentPage} = reduxState;
-    return {
-        user, 
-        following, 
-        currentPage, 
-        postsOnCurrentPage
-    }
-}
+// const mapStateToProps = (reduxState) => {
+//     const {user, following, currentPage, postsOnCurrentPage} = reduxState;
+//     return {
+//         user, 
+//         following, 
+//         currentPage, 
+//         postsOnCurrentPage
+//     }
+// }
 
 const mapDispatchToProps = {
     loginUser
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(/*mapStateToProps*/null, mapDispatchToProps)(Login)

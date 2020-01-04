@@ -27,7 +27,7 @@ class ProfilePagePostTemplate extends React.Component {
 
     render(){
         return(
-            <div className="ProfilePagePostTemplate-component-wrapping-div">
+            <div>
                 <div>
                     <input 
                         value={this.state.dateInput}

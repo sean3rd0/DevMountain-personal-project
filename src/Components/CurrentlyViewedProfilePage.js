@@ -36,9 +36,9 @@ class CurrentlyViewedProfilePage extends React.Component {
             .then(responseTwo => {
                 this.props.getPostsOnCurrentPage(responseTwo.data)
             })
-            .catch(err => console.log('this is the componentDidMount error from the INNER axios request: ', err))
+            .catch(err => console.log('this is the componentDidUpdate error from the INNER axios request: ', err))
         })
-        .catch(err => console.log('this is the componentDidMount error from the OUTER axios request: ', err))
+        .catch(err => console.log('this is the componentDidUpdate error from the OUTER axios request: ', err))
     }
 
 

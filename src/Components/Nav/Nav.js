@@ -79,16 +79,9 @@ class Nav extends React.Component {
 
         return(
             <NavComponent className="Nav-component-wrapping-div">
-                <Link to="/friends"><div className="Nav-component-friends-button">Friends</div></Link>
+                <Link to="/friends"><div className="Nav-component-friends-button"></div></Link>
                 <ProfilePicAndMenu>
-                    <NavProfilePictureSide className="Nav-component-profile-pic-container">
-                        <ProfilePictureCircle 
-                            src={this.props.profilePic}
-                            alt="Profile Picture"
-                            width="60"
-                            height="60"
-                        />
-                    </NavProfilePictureSide>
+                    <div className="white-text">white text</div>
                     <div className="navbar-menu">
                         <button className="navbar-buttons" onClick={this.props.handleSettingsButtonClick}>Settings</button>
                         <button className="navbar-buttons" onClick={this.props.handleLogoutButtonClick}>Logout</button>
@@ -102,8 +95,8 @@ class Nav extends React.Component {
                         : 
                         'menu'
                     }>
-                        <HamburgerMenuItems onClick={this.props.handleSettingsButtonClick}>Settings</HamburgerMenuItems>
-                        <HamburgerMenuItems onClick={this.props.handleLogoutButtonClick}>Logout</HamburgerMenuItems>
+                        <HamburgerMenuItems onClick={this.props.handleSettingsButtonClick} className="slide-menu-buttons">Settings</HamburgerMenuItems>
+                        <HamburgerMenuItems onClick={this.props.handleLogoutButtonClick} className="slide-menu-buttons">Logout</HamburgerMenuItems>
                     </div>       
                 </ProfilePicAndMenu>
             </NavComponent>

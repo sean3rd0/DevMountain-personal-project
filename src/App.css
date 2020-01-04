@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  padding-top: 40px; 
+  padding-top: 20px; 
 }
 
 @media (max-width: 450px) {
@@ -34,7 +34,6 @@
 }
 
 .UsernameDisplay-component-profile-picture {
-  /* background: yellow;  */
   height: 90px; 
   width: 90px; 
   border-radius: 50%;
